@@ -100,7 +100,8 @@ You can deploy a Twilio to Dialogflow "bridge" running serverless Cloud Run to e
 * A GCP Project with existing Dialogflow Agent setup in a project we'll refer 
 to as `PROJECTDIALOGFLOW`
 * A second GCP project that will host this application using AppEngine we'll 
-refer to as `PROJECTAPPENGINE`
+refer to as `PROJECTAPPENGINE` For the record, this may very well be the same as
+`PROJECTDIALOGFLOW`
 * You must login to gcloud as a user that has access to both projects.
 * Install gcloud SDK
 * Install node.js
@@ -110,7 +111,7 @@ refer to as `PROJECTAPPENGINE`
 * run `npm install -g @angular/cli`
 
 #### Setup
-* In `/Makefile` set `PROJECTDIALOGFLOW` and `PROJECTAPPENGINE` 
+* In `/Makefile` set the environment variables for `PROJECTDIALOGFLOW` and `PROJECTAPPENGINE` 
 * In `/server/app.yaml` Set `PROJECTDIALOGFLOW`
 * Run `make init` 
 * To develop, you will need a need a service account and credentials. To do 
