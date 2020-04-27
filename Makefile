@@ -1,7 +1,6 @@
 BASEDIR = $(shell pwd)
-PROJECTAPPENGINE=[project name that has public App Engine App in it]
-PROJECTDIALOGFLOW=[project name that has dialogflow agent in it]
-
+PROJECTAPPENGINE=$(COVID_CHAT_APPENGINE_PROJECT)
+PROJECTDIALOGFLOW=$(COVID_CHAT_DIALOGFLOW_PROJECT)
 
 PROJECTNUMBER=$(shell gcloud projects list --filter="$(PROJECTAPPENGINE)" --format="value(PROJECT_NUMBER)")
 
