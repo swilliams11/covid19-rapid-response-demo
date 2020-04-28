@@ -109,10 +109,11 @@ refer to as `PROJECTAPPENGINE` For the record, this may very well be the same as
 
 ##### Requirements for development
 * run `npm install -g @angular/cli`
+* set Env variable `PROJECTDIALOGFLOW`
+`export PROJECTDIALOGFLOW=[value you set for PROJECTDIALOGFLOW]`
 
 #### Setup
 * In `/Makefile` set the environment variables for `PROJECTDIALOGFLOW` and `PROJECTAPPENGINE` 
-* In `/server/app.yaml` Set `PROJECTDIALOGFLOW`
 * Run `make init` 
 * To develop, you will need a need a service account and credentials. To do 
 this run `make serviceaccount`
@@ -124,6 +125,8 @@ Running `make init` will do the following:
 * Enable Cloud Run service account to deploy to AppEngine on `PROJECTAPPENGINE`
 * Enable AppEngine on `PROJECTAPPENGINE` service account to call Dialogflow 
 on `PROJECTDIALOGFLOW`  
+* Create project metadata for App Engine to use so we don't have to hardcode \
+project ids. 
 * Create service account for Dialogflow   
 * Grant service account access to `PROJECTDIALOGFLOW`
 * Download key for service account. 

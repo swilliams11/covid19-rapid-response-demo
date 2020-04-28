@@ -30,6 +30,7 @@ init: env
 	-gcloud services enable cloudbuild.googleapis.com
 	-gcloud services enable appengine.googleapis.com 
 	-gcloud services enable dialogflow.googleapis.com
+	-gcloud services enable compute.googleapis.com
 	@echo ~~~~~~~~~~~~~ Intialize AppEngine on $(PROJECTAPPENGINE)
 	-gcloud app create --region us-central
 	@echo ~~~~~~~~~~~~~ Enable Cloud Run service account to deploy to AppEngine on $(PROJECTAPPENGINE)
@@ -39,7 +40,10 @@ init: env
 	@echo ~~~~~~~~~~~~~ Enable AppEngine on $(PROJECTAPPENGINE) service account to call Dialogflow on $(PROJECTDIALOGFLOW)	  
 	-gcloud projects add-iam-policy-binding $(PROJECTDIALOGFLOW) \
   	--member serviceAccount:$(PROJECTAPPENGINE)@appspot.gserviceaccount.com \
-  	--role roles/dialogflow.client 
+  	--role roles/dialogflow.client
+	@echo ~~~~~~~~~~~~~ Create metadata for AppEngine app to use   
+	gcloud compute project-info add-metadata \
+	--metadata=PROJECTDIALOGFLOW="$(COVID_CHAT_DIALOGFLOW_PROJECT)"   
 	@echo ~~~~~~~~~~~~~ Create service account for Dialogflow   
 	-gcloud iam service-accounts create dialogflow-chat-interface \
     --description "A service account for development of frontend of a Dialogflow agent" \
@@ -57,7 +61,6 @@ init: env
 	-cd server && go mod vender
 	@echo ~~~~~~~~~~~~~ Create Angular builder for Cloud Build 
 	-cd builder && make build
-	
 
 dev:
 	(trap 'kill 0' SIGINT; \
@@ -66,5 +69,3 @@ dev:
 	export GOOGLE_APPLICATION_CREDENTIALS=$(BASEDIR)/creds/creds.json && \
 	go run main.go & \
 	cd $(BASEDIR)/chat-interface && ng serve --open )
-
-	

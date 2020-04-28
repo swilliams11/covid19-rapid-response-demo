@@ -24,6 +24,7 @@ import (
 	"net/http"
 	"os"
 
+	"cloud.google.com/go/compute/metadata"
 	dialogflow "cloud.google.com/go/dialogflow/apiv2"
 	"github.com/golang/protobuf/jsonpb"
 	dialogflowpb "google.golang.org/genproto/googleapis/cloud/dialogflow/v2"
@@ -67,11 +68,34 @@ func setPort() {
 	log.Printf("Serving on port %s", port)
 }
 
+// userAgentTransport sets the User-Agent header before calling base.
+type userAgentTransport struct {
+	userAgent string
+	base      http.RoundTripper
+}
+
+// RoundTrip implements the http.RoundTripper interface.
+func (t userAgentTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+	req.Header.Set("User-Agent", t.userAgent)
+	return t.base.RoundTrip(req)
+}
+
 func setProject() error {
-	projectID = os.Getenv("PROJECTDIALOGFLOW")
-	if projectID == "" {
-		return fmt.Errorf("projectid for Dialogflow chat project not set")
+	var err error
+
+	client := metadata.NewClient(&http.Client{Transport: userAgentTransport{
+		userAgent: "dialogflow-rapid-response-bot",
+		base:      http.DefaultTransport,
+	}})
+
+	projectID, err = client.Get("PROJECTDIALOGFLOW")
+	if err != nil {
+		projectID = os.Getenv("PROJECTDIALOGFLOW")
 	}
+	if projectID == "" {
+		return fmt.Errorf("could not get Dialogflow project from metadata or env: %v", err)
+	}
+
 	return nil
 }
 
@@ -265,7 +289,7 @@ func detectIntentText(projectID, sessionID, text, languageCode string) (DFRespon
 	result := DFResponse{}
 
 	if projectID == "" || sessionID == "" {
-		return result, fmt.Errorf("received empty project or session")
+		return result, fmt.Errorf("received empty project or session, projectid:%s, sessionid:%s", projectID, sessionID)
 	}
 
 	sessionPath := fmt.Sprintf("projects/%s/agent/sessions/%s", projectID, sessionID)
