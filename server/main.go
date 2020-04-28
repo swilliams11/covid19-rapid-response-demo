@@ -23,14 +23,18 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
-	"cloud.google.com/go/compute/metadata"
 	dialogflow "cloud.google.com/go/dialogflow/apiv2"
+	secretmanager "cloud.google.com/go/secretmanager/apiv1"
 	"github.com/golang/protobuf/jsonpb"
+	"golang.org/x/oauth2/google"
+	"google.golang.org/api/compute/v1"
 	dialogflowpb "google.golang.org/genproto/googleapis/cloud/dialogflow/v2"
+	secretmanagerpb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
 )
 
-var projectID = ""
+var dfprojectID = ""
 var port string
 var sessionClient *dialogflow.SessionsClient
 var ctx = context.Background()
@@ -38,7 +42,7 @@ var ctx = context.Background()
 func main() {
 
 	setPort()
-	if err := setProject(); err != nil {
+	if err := setDialogFlowProject(); err != nil {
 		log.Fatal(err)
 	}
 
@@ -68,35 +72,44 @@ func setPort() {
 	log.Printf("Serving on port %s", port)
 }
 
-// userAgentTransport sets the User-Agent header before calling base.
-type userAgentTransport struct {
-	userAgent string
-	base      http.RoundTripper
-}
-
-// RoundTrip implements the http.RoundTripper interface.
-func (t userAgentTransport) RoundTrip(req *http.Request) (*http.Response, error) {
-	req.Header.Set("User-Agent", t.userAgent)
-	return t.base.RoundTrip(req)
-}
-
-func setProject() error {
+func setDialogFlowProject() error {
 	var err error
-
-	client := metadata.NewClient(&http.Client{Transport: userAgentTransport{
-		userAgent: "dialogflow-rapid-response-bot",
-		base:      http.DefaultTransport,
-	}})
-
-	projectID, err = client.Get("PROJECTDIALOGFLOW")
+	dfprojectID, err = getSecret()
 	if err != nil {
-		projectID = os.Getenv("PROJECTDIALOGFLOW")
+		dfprojectID = os.Getenv("PROJECTDIALOGFLOW")
 	}
-	if projectID == "" {
+	if dfprojectID == "" {
 		return fmt.Errorf("could not get Dialogflow project from metadata or env: %v", err)
 	}
 
 	return nil
+}
+
+func getSecret() (string, error) {
+	ctx := context.Background()
+
+	credentials, err := google.FindDefaultCredentials(ctx, compute.ComputeScope)
+	if err != nil {
+		return "", fmt.Errorf("could not determine this project id: %v", err)
+	}
+	id := credentials.ProjectID
+
+	client, err := secretmanager.NewClient(ctx)
+	if err != nil {
+		return "", fmt.Errorf("failed to create secretmanager client: %v", err)
+	}
+	path := fmt.Sprintf("projects/%s/secrets/PROJECTDIALOGFLOW/versions/latest", id)
+	req := &secretmanagerpb.AccessSecretVersionRequest{
+		Name: path,
+	}
+
+	result, err := client.AccessSecretVersion(ctx, req)
+	if err != nil {
+		return "", fmt.Errorf("failed to access secret version: %v", err)
+	}
+	output := strings.TrimSpace(string(result.Payload.Data))
+
+	return output, nil
 }
 
 func setSessionClient() error {
@@ -122,7 +135,7 @@ func handleQueryText(w http.ResponseWriter, r *http.Request) {
 	q := r.FormValue("q")
 	sessionid := r.FormValue("session")
 
-	resp, err := detectIntentText(projectID, sessionid, q, "en")
+	resp, err := detectIntentText(dfprojectID, sessionid, q, "en")
 	if err != nil {
 		writeError(w, err)
 		return
@@ -155,7 +168,7 @@ func handleQueryAudio(w http.ResponseWriter, r *http.Request) {
 	audioBytes := buf.Bytes()
 	sessionid := r.FormValue("session")
 
-	resp, err := detectIntentAudio(projectID, sessionid, audioBytes, "en")
+	resp, err := detectIntentAudio(dfprojectID, sessionid, audioBytes, "en")
 	if err != nil {
 		writeError(w, err)
 		return
@@ -176,7 +189,7 @@ func handleQueryEvent(w http.ResponseWriter, r *http.Request) {
 	e := r.FormValue("event")
 	sessionid := r.FormValue("session")
 
-	resp, err := detectIntentEvent(projectID, sessionid, e, "en")
+	resp, err := detectIntentEvent(dfprojectID, sessionid, e, "en")
 	if err != nil {
 		writeError(w, err)
 		return
@@ -285,14 +298,14 @@ func (d *DFResponse) MarshalMessagesToString() error {
 	return nil
 }
 
-func detectIntentText(projectID, sessionID, text, languageCode string) (DFResponse, error) {
+func detectIntentText(dfprojectID, sessionID, text, languageCode string) (DFResponse, error) {
 	result := DFResponse{}
 
-	if projectID == "" || sessionID == "" {
-		return result, fmt.Errorf("received empty project or session, projectid:%s, sessionid:%s", projectID, sessionID)
+	if dfprojectID == "" || sessionID == "" {
+		return result, fmt.Errorf("received empty project or session")
 	}
 
-	sessionPath := fmt.Sprintf("projects/%s/agent/sessions/%s", projectID, sessionID)
+	sessionPath := fmt.Sprintf("projects/%s/agent/sessions/%s", dfprojectID, sessionID)
 	request := dialogflowpb.DetectIntentRequest{
 		Session: sessionPath,
 		QueryInput: &dialogflowpb.QueryInput{
@@ -315,14 +328,14 @@ func detectIntentText(projectID, sessionID, text, languageCode string) (DFRespon
 	return result, nil
 }
 
-func detectIntentEvent(projectID, sessionID, eventName, languageCode string) (DFResponse, error) {
+func detectIntentEvent(dfprojectID, sessionID, eventName, languageCode string) (DFResponse, error) {
 	result := DFResponse{}
 
-	if projectID == "" || sessionID == "" {
+	if dfprojectID == "" || sessionID == "" {
 		return result, fmt.Errorf("received empty project or session")
 	}
 
-	sessionPath := fmt.Sprintf("projects/%s/agent/sessions/%s", projectID, sessionID)
+	sessionPath := fmt.Sprintf("projects/%s/agent/sessions/%s", dfprojectID, sessionID)
 	request := dialogflowpb.DetectIntentRequest{
 		Session: sessionPath,
 		QueryInput: &dialogflowpb.QueryInput{
@@ -344,15 +357,15 @@ func detectIntentEvent(projectID, sessionID, eventName, languageCode string) (DF
 	return result, nil
 }
 
-func detectIntentAudio(projectID, sessionID string, audioBytes []byte, languageCode string) (DFResponse, error) {
+func detectIntentAudio(dfprojectID, sessionID string, audioBytes []byte, languageCode string) (DFResponse, error) {
 
 	result := DFResponse{}
 
-	if projectID == "" || sessionID == "" {
+	if dfprojectID == "" || sessionID == "" {
 		return result, fmt.Errorf("Received empty project or session")
 	}
 
-	sessionPath := fmt.Sprintf("projects/%s/agent/sessions/%s", projectID, sessionID)
+	sessionPath := fmt.Sprintf("projects/%s/agent/sessions/%s", dfprojectID, sessionID)
 
 	// In this example, we hard code the encoding and sample rate for simplicity.
 	request := dialogflowpb.DetectIntentRequest{

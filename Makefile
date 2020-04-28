@@ -69,3 +69,27 @@ dev:
 	export GOOGLE_APPLICATION_CREDENTIALS=$(BASEDIR)/creds/creds.json && \
 	go run main.go & \
 	cd $(BASEDIR)/chat-interface && ng serve --open )
+
+secret:
+	gcloud secrets create "PROJECTDIALOGFLOW" --replication-policy="automatic"
+	echo $(PROJECTDIALOGFLOW) | gcloud secrets versions add "PROJECTDIALOGFLOW" --data-file=-	
+
+secretperm:
+	
+	# @echo ~~~~~~~~~~~~~ Enable AppEngine on $(PROJECTAPPENGINE) service account access to secrets
+	# -gcloud projects add-iam-policy-binding $(PROJECTAPPENGINE) \
+  	# --member serviceAccount:$(PROJECTAPPENGINE)@appspot.gserviceaccount.com \
+  	# --role roles/secretmanager.viewer
+
+	# @echo ~~~~~~~~~~~~~ Grant service account access to secrets
+	# -gcloud projects add-iam-policy-binding $(PROJECTDIALOGFLOW) \
+  	# --member serviceAccount:dialogflow-chat-interface@$(PROJECTDIALOGFLOW).iam.gserviceaccount.com \
+  	# --role roles/secretmanager.viewer
+
+	-gcloud secrets add-iam-policy-binding PROJECTDIALOGFLOW \
+    --member serviceAccount:$(PROJECTAPPENGINE)@appspot.gserviceaccount.com \
+    --role roles/secretmanager.secretAccessor
+
+	-gcloud secrets add-iam-policy-binding PROJECTDIALOGFLOW \
+    --member serviceAccount:dialogflow-chat-interface@$(PROJECTDIALOGFLOW).iam.gserviceaccount.com \
+    --role roles/secretmanager.secretAccessor
