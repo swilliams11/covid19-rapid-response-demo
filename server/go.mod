@@ -3,8 +3,12 @@ module chatbot
 go 1.14
 
 require (
-	cloud.google.com/go v0.55.0
-	github.com/golang/protobuf v1.4.0-rc.4
-	google.golang.org/genproto v0.0.0-20200324203455-a04cca1dde73
-	google.golang.org/protobuf v1.20.1 // indirect
+	cloud.google.com/go v0.56.0
+	github.com/golang/protobuf v1.4.0
+	golang.org/x/net v0.0.0-20200425230154-ff2c4b7c35a0 // indirect
+	golang.org/x/sys v0.0.0-20200427175716-29b57079015a // indirect
+	google.golang.org/api v0.22.0 // indirect
+	google.golang.org/appengine v1.6.6 // indirect
+	google.golang.org/genproto v0.0.0-20200424135956-bca184e23272
+	google.golang.org/grpc v1.29.1 // indirect
 )
