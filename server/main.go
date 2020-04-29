@@ -37,6 +37,7 @@ import (
 var dfprojectID = ""
 var port string
 var sessionClient *dialogflow.SessionsClient
+var agentClient *dialogflow.AgentsClient
 var ctx = context.Background()
 
 func main() {
@@ -51,8 +52,14 @@ func main() {
 	}
 	defer sessionClient.Close()
 
+	if err := setAgentClient(); err != nil {
+		log.Fatal(err)
+	}
+	defer agentClient.Close()
+
 	http.Handle("/", changeHeaderThenServe(http.FileServer(http.Dir("./dist"))))
 	http.HandleFunc("/healthz", handleHealth)
+	http.HandleFunc("/agent", handleTitle)
 	http.HandleFunc("/query/text", handleQueryText)
 	http.HandleFunc("/query/audio", handleQueryAudio)
 	http.HandleFunc("/query/event", handleQueryEvent)
@@ -86,7 +93,6 @@ func setDialogFlowProject() error {
 }
 
 func getSecret() (string, error) {
-	ctx := context.Background()
 
 	credentials, err := google.FindDefaultCredentials(ctx, compute.ComputeScope)
 	if err != nil {
@@ -122,10 +128,46 @@ func setSessionClient() error {
 	return nil
 }
 
+func setAgentClient() error {
+	var err error
+
+	agentClient, err = dialogflow.NewAgentsClient(ctx)
+	if err != nil {
+		return fmt.Errorf("could not get a dialogflow agent client: %s", err)
+	}
+	return nil
+}
+
 // Handlers code.
 func handleHealth(w http.ResponseWriter, r *http.Request) {
 	writeResponse(w, http.StatusOK, "{\"status\":\"ok\")")
 	return
+}
+
+func handleTitle(w http.ResponseWriter, r *http.Request) {
+	resp, err := getAgent()
+	if err != nil {
+		writeError(w, err)
+		return
+	}
+
+	title := resp.Description
+
+	jsonString := fmt.Sprintf("{\"title\":\"%s\"}", title)
+
+	writeResponse(w, http.StatusOK, jsonString)
+	return
+}
+
+func getAgent() (*dialogflowpb.Agent, error) {
+	req := &dialogflowpb.GetAgentRequest{
+		Parent: "projects/" + dfprojectID,
+	}
+	resp, err := agentClient.GetAgent(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("could not get agent data %v", err)
+	}
+	return resp, nil
 }
 
 func handleQueryText(w http.ResponseWriter, r *http.Request) {

@@ -14,6 +14,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { ChatService, Message } from '../chat.service';
+import { AgentService, Agent } from '../agent.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/scan';
 
@@ -27,8 +28,9 @@ import 'rxjs/add/operator/scan';
 export class ChatDialogComponent implements OnInit {
   
   messages: Observable<Message[]>;
+  agent:Agent = {title:""};
 
-  constructor(public chat: ChatService) { }
+  constructor(public chat: ChatService, public agentService: AgentService) { }
 
   ngOnInit() {
     // appends to array after each new message is added to feedSource
@@ -37,7 +39,14 @@ export class ChatDialogComponent implements OnInit {
     this.chat.conversation.subscribe(value => {
       this.hideTemp();
     })
+    this.getTitle();
+  
   }
+
+  getTitle(): void {
+    this.agentService.get().subscribe(
+agent => this.agent = agent);
+  } 
 
  
 
