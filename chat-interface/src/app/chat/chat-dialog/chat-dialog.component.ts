@@ -16,6 +16,7 @@ import { Component, OnInit } from '@angular/core';
 import { ChatService, Message } from '../chat.service';
 import { AgentService, Agent } from '../agent.service';
 import { Observable } from 'rxjs/Observable';
+import { Title } from '@angular/platform-browser';
 import 'rxjs/add/operator/scan';
 
 
@@ -26,11 +27,11 @@ import 'rxjs/add/operator/scan';
 })
 
 export class ChatDialogComponent implements OnInit {
-  
-  messages: Observable<Message[]>;
-  agent:Agent = {title:""};
 
-  constructor(public chat: ChatService, public agentService: AgentService) { }
+  messages: Observable<Message[]>;
+  agent: Agent = { title: "" };
+
+  constructor(public chat: ChatService, public agentService: AgentService, private titleService: Title) { }
 
   ngOnInit() {
     // appends to array after each new message is added to feedSource
@@ -40,25 +41,31 @@ export class ChatDialogComponent implements OnInit {
       this.hideTemp();
     })
     this.getTitle();
-  
+
   }
 
   getTitle(): void {
-    this.agentService.get().subscribe(
-agent => this.agent = agent);
-  } 
-
- 
-
-  ngAfterViewChecked(){
+    this.agentService.get().subscribe(agent => {
+      this.agent = agent;
+      this.setTitle(agent.title);
+    });
   }
 
-  
+  setTitle(newTitle: string): void {
+    this.titleService.setTitle(newTitle);
+  }
 
-  hideTemp(){
+
+
+  ngAfterViewChecked() {
+  }
+
+
+
+  hideTemp() {
     var temps = document.querySelectorAll(".message.temp");
 
-    temps.forEach(function(temp:HTMLElement) {
+    temps.forEach(function (temp: HTMLElement) {
       temp.style.display = "none";
     });
   }

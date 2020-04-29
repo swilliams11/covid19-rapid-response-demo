@@ -25,12 +25,14 @@ import { ChatMessageComponent } from './chat-message/chat-message.component';
 import { ChatChoiceComponent } from './chat-choice/chat-choice.component';
 import { ChatAccordianComponent } from './chat-accordian/chat-accordian.component';
 import { DeclorateLinksPipe } from './declorate-links.pipe';
+import { BrowserModule, Title }  from '@angular/platform-browser';
 
 
 @NgModule({
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    BrowserModule
   ],
   declarations: [
     ChatDialogComponent,
@@ -40,6 +42,6 @@ import { DeclorateLinksPipe } from './declorate-links.pipe';
 
   ],
   exports: [ ChatDialogComponent ],
-  providers: [ChatService,AudioService]
+  providers: [ChatService,AudioService,Title]
 })
 export class ChatModule { }
