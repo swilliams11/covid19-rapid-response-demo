@@ -54,7 +54,18 @@ init: env
   	--role roles/dialogflow.client
 	@echo ~~~~~~~~~~~~~ Download key for service account. 
 	-gcloud iam service-accounts keys create creds/creds.json \
-  	--iam-account dialogflow-chat-interface@$(PROJECTDIALOGFLOW).iam.gserviceaccount.com   
+  	--iam-account dialogflow-chat-interface@$(PROJECTDIALOGFLOW).iam.gserviceaccount.com  
+	@echo ~~~~~~~~~~~~~ Creating secret to store reference to $(PROJECTDIALOGFLOW) 
+	-gcloud secrets create "PROJECTDIALOGFLOW" --replication-policy="automatic"
+	-echo $(PROJECTDIALOGFLOW) | gcloud secrets versions add "PROJECTDIALOGFLOW" --data-file=-	
+	@echo ~~~~~~~~~~~~~ Enable AppEngine on $(PROJECTAPPENGINE) service account access to secrets
+	-gcloud secrets add-iam-policy-binding PROJECTDIALOGFLOW \
+    --member serviceAccount:$(PROJECTAPPENGINE)@appspot.gserviceaccount.com \
+    --role roles/secretmanager.secretAccessor
+	@echo ~~~~~~~~~~~~~ Grant service account access to secrets
+	-gcloud secrets add-iam-policy-binding PROJECTDIALOGFLOW \
+    --member serviceAccount:dialogflow-chat-interface@$(PROJECTDIALOGFLOW).iam.gserviceaccount.com \
+    --role roles/secretmanager.secretAccessor   
 	@echo ~~~~~~~~~~~~~ Install node_modules. 
 	-cd chat-interface && npm install
 	@echo ~~~~~~~~~~~~~Install Go vendor dependencies
@@ -70,26 +81,4 @@ dev:
 	go run main.go & \
 	cd $(BASEDIR)/chat-interface && ng serve --open )
 
-secret:
-	gcloud secrets create "PROJECTDIALOGFLOW" --replication-policy="automatic"
-	echo $(PROJECTDIALOGFLOW) | gcloud secrets versions add "PROJECTDIALOGFLOW" --data-file=-	
-
-secretperm:
 	
-	# @echo ~~~~~~~~~~~~~ Enable AppEngine on $(PROJECTAPPENGINE) service account access to secrets
-	# -gcloud projects add-iam-policy-binding $(PROJECTAPPENGINE) \
-  	# --member serviceAccount:$(PROJECTAPPENGINE)@appspot.gserviceaccount.com \
-  	# --role roles/secretmanager.viewer
-
-	# @echo ~~~~~~~~~~~~~ Grant service account access to secrets
-	# -gcloud projects add-iam-policy-binding $(PROJECTDIALOGFLOW) \
-  	# --member serviceAccount:dialogflow-chat-interface@$(PROJECTDIALOGFLOW).iam.gserviceaccount.com \
-  	# --role roles/secretmanager.viewer
-
-	-gcloud secrets add-iam-policy-binding PROJECTDIALOGFLOW \
-    --member serviceAccount:$(PROJECTAPPENGINE)@appspot.gserviceaccount.com \
-    --role roles/secretmanager.secretAccessor
-
-	-gcloud secrets add-iam-policy-binding PROJECTDIALOGFLOW \
-    --member serviceAccount:dialogflow-chat-interface@$(PROJECTDIALOGFLOW).iam.gserviceaccount.com \
-    --role roles/secretmanager.secretAccessor
