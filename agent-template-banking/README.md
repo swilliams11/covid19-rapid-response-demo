@@ -35,7 +35,8 @@ Following the documentation below to deploy your agent and then you ask the foll
 is able to handle variations in the questions below, so these are sample questions.  Only a subset of bank names were entered into the agent.
 
 ### Query a real bank
-1. What are the hours of operation for `BANK_NAME`?
+#### 1. What are the hours of operation for `BANK_NAME`?
+
 The agent will send the request to the Google Cloud Function which will convert your address to a Geocode using the **Geocoding API** and then search for the closest
 location near your address with the **Google Places API**.  Enter an actual address for best results.  
 
@@ -48,7 +49,8 @@ location near your address with the **Google Places API**.  Enter an actual addr
 **Response**
 `The closest BANK_NAME is ADDRESS and the hours of operation are LOCATION_HOURS_OF_OPERATION`
 
-2. `BANK_NAME` open branches?
+#### 2. `BANK_NAME` open branches?
+
 This is will always return a default response using fulfillment.
 **Agent Follow-up Prompt**
 `What is your address?`
@@ -62,12 +64,30 @@ This is will always return a default response using fulfillment.
 2234 Park Place Dallas, TX
 3678 Smith Way Dallas, TX`
 
+#### 3. Can I refinance my mortgage?
+
+The agent will respond with the default text response.  This question does not use fulfillment.  
+
+**Response**
+```Generally, you should consider refinancing if interest rates are falling or home prices are rising.  
+If you are interested in refinancing, then please start the online application process here.
+```
+
+#### 4. I will miss my credit card payment, how can you help?
+
+The agent will respond with the default text response.  This question does not use fulfillment.  
+
+**Response**
+```If you want to formally request that your credit card payment be delayed for yourself or your business, 
+then please enroll online for the fastest service.
+```
 
 
 ### Acme Bank Questions
 You can query a fictious bank that will fulfill the request with a Google Cloud Function.
 
-1. What are the hours of operation for Acme bank?
+#### 1. What are the hours of operation for Acme bank?
+
 This is will always return a default response using fulfillment.  
 **Agent Follow-up Prompt**
 `What is your address?`
@@ -77,9 +97,11 @@ This is will always return a default response using fulfillment.
 
 **Response**
 ```The closest Acme bank is 333 Jackson blvd, Chicago IL and the hours of operation are 
-Monday - Friday 9AM - 4PM, Saturday 9AM - 12PM and closed on Sunday```
+Monday - Friday 9AM - 4PM, Saturday 9AM - 12PM and closed on Sunday
+```
 
-2. `BANK_NAME` open branches?
+#### 2. `BANK_NAME` open branches?
+
 The agent will send the request to the Google Cloud Function, which will convert your address to a Geocode using the **Geocoding API** and then search for the 3 closest
 operational locations near your address with the **Google Places API**.  Enter an actual address for best results.  This will return the 
 vicinity, not the actual address.  
@@ -94,21 +116,8 @@ vicinity, not the actual address.
 ```I found some locations that are near by your address.
 ADDRESS_1
 ADDRESS_2
-ADDRESS_3```
-
-3. Can I refinance my mortgage?
-The agent will respond with the default text response.  This question does not use fulfillment.  
-
-**Response**
-```Generally, you should consider refinancing if interest rates are falling or home prices are rising.  
-If you are interested in refinancing, then please start the online application process here.```
-
-4. I will miss my credit card payment, how can you help?
-The agent will respond with the default text response.  This question does not use fulfillment.  
-
-**Response**
-```If you want to formally request that your credit card payment be delayed for yourself or your business, 
-then please enroll online for the fastest service.```
+ADDRESS_3
+```
 
 ## Agent Deployment
 Google provides the [COVID-19 Banking Dialogflow virtual agent 
