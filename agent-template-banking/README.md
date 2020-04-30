@@ -34,7 +34,7 @@ and community needs
 Following the documentation below to deploy your agent and then you ask the following questions.  The agent is
 is able to handle variations in the questions below, so these are sample questions.  Only a subset of bank names were entered into the agent.
 
-### Query a real bank
+### Query an actual bank
 #### 1. What are the hours of operation for `BANK_NAME`?
 
 The agent will send the request to the Google Cloud Function which will convert your address to a Geocode using the **Geocoding API** and then search for the closest
@@ -51,18 +51,22 @@ location near your address with the **Google Places API**.  Enter an actual addr
 
 #### 2. `BANK_NAME` open branches?
 
-This is will always return a default response using fulfillment.
+The agent will send the request to the Google Cloud Function, which will convert your address to a Geocode using the **Geocoding API** and then search for the 3 closest
+operational locations near your address with the **Google Places API**.  Enter an actual address for best results.  This will return the 
+vicinity, not the actual address.  
+
 **Agent Follow-up Prompt**
 `What is your address?`
 
 **User Response**
-`Dallas, TX`
+`1600 Amphitheatre Pwky, Mountain View CA`
 
 **Response**
-`I found some locations that are near by your address.
-1234 Main Street Dallas, TX
-2234 Park Place Dallas, TX
-3678 Smith Way Dallas, TX`
+```I found some locations that are near by your address.
+ADDRESS_1
+ADDRESS_2
+ADDRESS_3
+```
 
 #### 3. Can I refinance my mortgage?
 
@@ -102,10 +106,7 @@ Monday - Friday 9AM - 4PM, Saturday 9AM - 12PM and closed on Sunday
 
 #### 2. `BANK_NAME` open branches?
 
-The agent will send the request to the Google Cloud Function, which will convert your address to a Geocode using the **Geocoding API** and then search for the 3 closest
-operational locations near your address with the **Google Places API**.  Enter an actual address for best results.  This will return the 
-vicinity, not the actual address.  
-
+This is will always return a default response using fulfillment.
 **Agent Follow-up Prompt**
 `What is your address?`
 
@@ -113,11 +114,11 @@ vicinity, not the actual address.
 `Dallas, TX`
 
 **Response**
-```I found some locations that are near by your address.
-ADDRESS_1
-ADDRESS_2
-ADDRESS_3
-```
+`I found some locations that are near by your address.
+1234 Main Street Dallas, TX
+2234 Park Place Dallas, TX
+3678 Smith Way Dallas, TX`
+
 
 ## Agent Deployment
 Google provides the [COVID-19 Banking Dialogflow virtual agent 
