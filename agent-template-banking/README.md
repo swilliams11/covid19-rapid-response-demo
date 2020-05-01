@@ -40,13 +40,16 @@ is able to handle variations in the questions below, so these are sample questio
 The agent will send the request to the Google Cloud Function which will convert your address to a Geocode using the **Geocoding API** and then search for the closest
 location near your address with the **Google Places API**.  Enter an actual address for best results.  
 
-**Agent Follow-up Prompt**
+##### Agent Follow-up Prompt
+
 `What is your address?`
 
-**User Response**
+##### User Response
+
 `500 W Madison St Chicago, IL`
 
-**Response**
+##### Response
+
 `The closest BANK_NAME is ADDRESS and the hours of operation are LOCATION_HOURS_OF_OPERATION`
 
 #### 2. `BANK_NAME` open branches?
@@ -55,14 +58,18 @@ The agent will send the request to the Google Cloud Function, which will convert
 operational locations near your address with the **Google Places API**.  Enter an actual address for best results.  This will return the 
 vicinity, not the actual address.  
 
-**Agent Follow-up Prompt**
+##### Agent Follow-up Prompt
+
 `What is your address?`
 
-**User Response**
+##### User Response
+
 `1600 Amphitheatre Pwky, Mountain View CA`
 
-**Response**
-```I found some locations that are near by your address.
+##### Response
+
+```
+I found some locations that are near by your address.
 ADDRESS_1
 ADDRESS_2
 ADDRESS_3
@@ -72,8 +79,9 @@ ADDRESS_3
 
 The agent will respond with the default text response.  This question does not use fulfillment.  
 
-**Response**
-```Generally, you should consider refinancing if interest rates are falling or home prices are rising.  
+##### Response
+```
+Generally, you should consider refinancing if interest rates are falling or home prices are rising.  
 If you are interested in refinancing, then please start the online application process here.
 ```
 
@@ -81,8 +89,9 @@ If you are interested in refinancing, then please start the online application p
 
 The agent will respond with the default text response.  This question does not use fulfillment.  
 
-**Response**
-```If you want to formally request that your credit card payment be delayed for yourself or your business, 
+##### Response
+```
+If you want to formally request that your credit card payment be delayed for yourself or your business, 
 then please enroll online for the fastest service.
 ```
 
@@ -93,31 +102,42 @@ You can query a fictious bank that will fulfill the request with a Google Cloud 
 #### 1. What are the hours of operation for Acme bank?
 
 This is will always return a default response using fulfillment.  
-**Agent Follow-up Prompt**
+
+##### Agent Follow-up Prompt
+
 `What is your address?`
 
-**User Response**
+##### User Response
+
 `Chicago, IL`
 
-**Response**
-```The closest Acme bank is 333 Jackson blvd, Chicago IL and the hours of operation are 
+##### Response
+
+```
+The closest Acme bank is 333 Jackson blvd, Chicago IL and the hours of operation are 
 Monday - Friday 9AM - 4PM, Saturday 9AM - 12PM and closed on Sunday
 ```
 
 #### 2. `BANK_NAME` open branches?
 
 This is will always return a default response using fulfillment.
-**Agent Follow-up Prompt**
+
+##### Agent Follow-up Prompt
+
 `What is your address?`
 
-**User Response**
+##### User Response
+
 `Dallas, TX`
 
-**Response**
-`I found some locations that are near by your address.
+##### Response
+
+```
+I found some locations that are near by your address.
 1234 Main Street Dallas, TX
 2234 Park Place Dallas, TX
-3678 Smith Way Dallas, TX`
+3678 Smith Way Dallas, TX
+```
 
 
 ## Agent Deployment
