@@ -48,7 +48,7 @@ location near your address with the **Google Places API**.  Enter an actual addr
 
 `500 W Madison St Chicago, IL`
 
-##### Response
+##### Agent Response
 
 `The closest BANK_NAME is ADDRESS and the hours of operation are LOCATION_HOURS_OF_OPERATION`
 
@@ -66,7 +66,7 @@ vicinity, not the actual address.
 
 `1600 Amphitheatre Pwky, Mountain View CA`
 
-##### Response
+##### Agent Response
 
 ```
 I found some locations that are near by your address.
@@ -79,7 +79,7 @@ ADDRESS_3
 
 The agent will respond with the default text response.  This question does not use fulfillment.  
 
-##### Response
+##### Agent Response
 ```
 Generally, you should consider refinancing if interest rates are falling or home prices are rising.  
 If you are interested in refinancing, then please start the online application process here.
@@ -89,7 +89,7 @@ If you are interested in refinancing, then please start the online application p
 
 The agent will respond with the default text response.  This question does not use fulfillment.  
 
-##### Response
+##### Agent Response
 ```
 If you want to formally request that your credit card payment be delayed for yourself or your business, 
 then please enroll online for the fastest service.
@@ -111,7 +111,7 @@ This is will always return a default response using fulfillment.
 
 `Chicago, IL`
 
-##### Response
+##### Agent Response
 
 ```
 The closest Acme bank is 333 Jackson blvd, Chicago IL and the hours of operation are 
@@ -130,7 +130,7 @@ This is will always return a default response using fulfillment.
 
 `Dallas, TX`
 
-##### Response
+##### Agent Response
 
 ```
 I found some locations that are near by your address.
