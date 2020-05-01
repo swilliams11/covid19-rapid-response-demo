@@ -1,3 +1,4 @@
 twilio-sms/env.bash
 twilio-sms/.venv
 creds/
+server/vendor
