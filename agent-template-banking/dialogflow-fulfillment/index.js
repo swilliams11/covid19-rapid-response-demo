@@ -293,7 +293,7 @@ function openBranches(agent) {
         for(i = 0; i < candidates.length && operationalCount < maxOperational; i++){
            if(candidates[i].business_status === 'OPERATIONAL'){
                operationalCount += 1; 
-               console.log(candidates[i].vicinity);
+               console.log(candidates[i].place_id + ' ' + candidates[i].vicinity);
                agent.add('<address>' + candidates[i].vicinity + '</address>');
            }
         }
