@@ -36,8 +36,8 @@ updated regularly by Verily
 Information on COVID-19 changes frequently. Check release dates and review 
 content before launching your bot.
 
-## Additional Agents
-* [Rapid Response Banking Virtual Agent](./agent-template-banking)
+## Additional Agent Templates
+* [Rapid Response Banking Virtual Agent Template](./agent-template-banking)
 
 ## Agent Deployment
 Verily provides the [Dialogflow Verily COVID-19 Pathfinder virtual agent 
