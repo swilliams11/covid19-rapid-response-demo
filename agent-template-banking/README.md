@@ -34,7 +34,101 @@ and community needs
 Following the documentation below to deploy your agent and then you ask the following questions.  The agent is
 is able to handle variations in the questions below, so these are sample questions.  Only a subset of bank names were entered into the agent.
 
-### Query an actual bank
+### General Questions
+#### 1. Can I refinance my mortgage?
+
+The agent will respond with the default text response.  This question does not use fulfillment.  
+
+##### Agent Response
+```
+Generally, you should consider refinancing if interest rates are falling or home prices are rising.  
+If you are interested in refinancing, then please start the online application process here.
+```
+
+#### 2. I will miss my credit card payment, how can you help?
+
+The agent will respond with the default text response.  This question does not use fulfillment.  
+
+##### Agent Response
+```
+If you want to formally request that your credit card payment be delayed for yourself or your business, 
+then please enroll online for the fastest service.
+```
+
+#### 3. How are you assisting banking customers affected by the COVID19 pandemic?
+
+The agent will respond with the default text response; no fulfillment.
+
+##### Agent Response
+```
+We are here to help in any way we can.  First visit the CDC for the most updated information on COVID-19.  
+We offer a variety of mobile services such as banking online, transferring money via our mobile application, 
+depositing checks from your home by phone or our app, and the ability to make purchases with our digital wallet.  
+These service should help you maintain social distancing.  We are also limiting our branch office hours and allowing 
+drive through service, when available.
+```
+
+#### 4. What is the best way to bank if I am sheltering in place?
+
+The agent will respond with the default text response; no fulfillment.
+
+##### Agent Response
+```
+We offer expanded services through the use of drive-up teller windows, 
+or provide assistance at ATMs located outside of the branch office. 
+Please visit our website and register for online banking or download our mobile app.  
+You can complete transactions such as depositing a check to your bank account or paying bills. 
+In addition, you may want to consider signing up for direct deposit so that a paycheck or public 
+benefits payment goes directly into your account.
+```
+
+#### 5. Are you waiving late charges?
+
+The agent will respond with the default text response; no fulfillment.
+
+##### Agent Response
+```
+We understand during this time that you may be seriously affected by COVID-19 and we may 
+be able to assist you with your payment. We can provide some options depending on if it is 
+a loan or credit card.  If its a loan, then we may allow you to skip loan payments with no 
+adverse consequences for you, extend loan terms, or restructure the loan.  
+If it is a credit card then we may be able to waive the late charge and possibly the 
+interest for a set time period.  Please use our website to request more information.
+```
+
+#### 6. Can I defer loan payments because of COVID-19?
+
+The agent will respond with the default text response; no fulfillment.
+
+##### Agent Response
+```
+If you are unable to make a loan payment due to COVID-19, then we may be able to assist you. 
+Please contact us for more information or visit our website for more information.
+```
+
+#### 7. How are we assisting mortgage customers affected by the COVID-19 pandemic?
+
+The agent will respond with the default text response; no fulfillment.
+
+##### Agent Response
+```
+A new federal law, the Coronavirus Aid, Relief, and Economic Security (CARES) Act, puts in place two 
+protections for homeowners with federally backed mortgages:
+
+First, your lender or loan servicer may not foreclose on you for 60 days after March 18, 2020. Specifically, 
+the CARES Act prohibits lenders and servicers from beginning a judicial or non-judicial foreclosure against you, 
+or from finalizing a foreclosure judgment or sale, during this period of time.
+
+Second, if you experience financial hardship due to the coronavirus pandemic, you have a right to 
+request a forbearance for up to 180 days. You also have the right to request an extension for up to another 180 days. 
+You must contact your loan servicer to request this forbearance. There will be no additional fees, penalties or 
+additional interest (beyond scheduled amounts) added to your account. You do not need to submit additional documentation 
+to qualify other than your claim to have a pandemic-related financial hardship.  
+
+If your loan is not federally backed then there may be other options available for your state and servicer.
+```
+
+### Query an actual banks hours of operation or branch locations
 #### 1. What are the hours of operation for `BANK_NAME`?
 
 The agent will send the request to the Google Cloud Function which will convert your address to a Geocode using the **Geocoding API** and then search for the closest
@@ -73,26 +167,6 @@ I found some locations that are near by your address.
 ADDRESS_1
 ADDRESS_2
 ADDRESS_3
-```
-
-#### 3. Can I refinance my mortgage?
-
-The agent will respond with the default text response.  This question does not use fulfillment.  
-
-##### Agent Response
-```
-Generally, you should consider refinancing if interest rates are falling or home prices are rising.  
-If you are interested in refinancing, then please start the online application process here.
-```
-
-#### 4. I will miss my credit card payment, how can you help?
-
-The agent will respond with the default text response.  This question does not use fulfillment.  
-
-##### Agent Response
-```
-If you want to formally request that your credit card payment be delayed for yourself or your business, 
-then please enroll online for the fastest service.
 ```
 
 
