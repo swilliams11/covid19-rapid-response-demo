@@ -88,7 +88,6 @@ func setDialogFlowProject() error {
 	if dfprojectID == "" {
 		return fmt.Errorf("could not get Dialogflow project from metadata or env: %v", err)
 	}
-	fmt.Printf("Projectid: %s\n", dfprojectID)
 
 	return nil
 }
@@ -100,7 +99,6 @@ func getSecret() (string, error) {
 		return "", fmt.Errorf("could not determine this project id: %v", err)
 	}
 	id := credentials.ProjectID
-	fmt.Printf("cred:  %v\n", string(credentials.JSON))
 
 	client, err := secretmanager.NewClient(ctx)
 	if err != nil {

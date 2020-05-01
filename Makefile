@@ -62,7 +62,7 @@ permissions:
   	--role roles/dialogflow.client
 	@echo ~~~~~~~~~~~~~ Grant service account access to $(PROJECTDIALOGFLOW)
 	-gcloud projects add-iam-policy-binding $(PROJECTDIALOGFLOW) \
-  	--member serviceAccount:dialogflow-chat-interface@$(PROJECTDIALOGFLOW).iam.gserviceaccount.com \
+  	--member serviceAccount:chat-sa@$(PROJECTDIALOGFLOW).iam.gserviceaccount.com \
   	--role roles/dialogflow.client 
 	@echo ~~~~~~~~~~~~~ Enable AppEngine on $(PROJECTAPPENGINE) service account access to secrets
 	-gcloud secrets add-iam-policy-binding PROJECTDIALOGFLOW \
@@ -70,30 +70,30 @@ permissions:
     --role roles/secretmanager.secretAccessor
 	@echo ~~~~~~~~~~~~~ Grant service account access to secrets
 	-gcloud secrets add-iam-policy-binding PROJECTDIALOGFLOW \
-    --member serviceAccount:dialogflow-chat-interface@$(PROJECTDIALOGFLOW).iam.gserviceaccount.com \
+    --member serviceAccount:chat-sa@$(PROJECTDIALOGFLOW).iam.gserviceaccount.com \
     --role roles/secretmanager.secretAccessor      
 
 
 serviceaccount:
 	@echo ~~~~~~~~~~~~~ Create service account for Dialogflow   
-	-gcloud iam service-accounts create dialogflow-chat-interface \
+	-gcloud iam service-accounts create chat-sa \
     --description "A service account for development of frontend of a Dialogflow agent" \
     --display-name "Dialogflow Chat Bot" --project $(PROJECTDIALOGFLOW)
 	@echo ~~~~~~~~~~~~~ Grant service account access to $(PROJECTDIALOGFLOW)
 	-gcloud projects add-iam-policy-binding $(PROJECTDIALOGFLOW) \
-  	--member serviceAccount:dialogflow-chat-interface@$(PROJECTDIALOGFLOW).iam.gserviceaccount.com \
-  	--role roles/dialogflow.client
+  	--member serviceAccount:chat-sa@$(PROJECTDIALOGFLOW).iam.gserviceaccount.com \
+  	--role roles/dialogflow.admin
 	@echo ~~~~~~~~~~~~~ Grant service account access to secrets
 	-gcloud secrets add-iam-policy-binding PROJECTDIALOGFLOW \
-    --member serviceAccount:dialogflow-chat-interface@$(PROJECTDIALOGFLOW).iam.gserviceaccount.com \
+    --member serviceAccount:chat-sa@$(PROJECTDIALOGFLOW).iam.gserviceaccount.com \
     --role roles/secretmanager.secretAccessor       
 	@echo ~~~~~~~~~~~~~ Download key for service account. 
 	-gcloud iam service-accounts keys create creds/creds.json \
-  	--iam-account dialogflow-chat-interface@$(PROJECTDIALOGFLOW).iam.gserviceaccount.com  
+  	--iam-account chat-sa@$(PROJECTDIALOGFLOW).iam.gserviceaccount.com  
 
 cleansa:
 	-gcloud iam service-accounts delete \
-	dialogflow-chat-interface@$(PROJECTDIALOGFLOW).iam.gserviceaccount.com \
+	chat-sa@$(PROJECTDIALOGFLOW).iam.gserviceaccount.com \
 	--project $(PROJECTDIALOGFLOW) -q
 
 secret:
