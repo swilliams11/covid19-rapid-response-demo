@@ -31,7 +31,7 @@ function acmeOpenHours(agent) {
   return convertAddressToGeocode(mapsClient, userAddress)
       .then(response => {
         console.log('The returned latitude and longitude is ' + response);
-        agent.add('The closest Acme bank is 333 Jackson blvd, Chicago IL and the hours of operation are Monday - Friday 9AM - 4PM, Saturday 9AM - 12PM and closed on Sunday'); 
+        agent.add('The closest Acme bank is <address>333 Jackson blvd, Chicago IL</address> and the hours of operation are Monday - Friday 9AM - 4PM, Saturday 9AM - 12PM and closed on Sunday'); 
       })
       .catch(e => {
         if (!!name) {
@@ -72,9 +72,9 @@ function acmeOpenBranches(agent) {
         console.log('The returned latitude and longitude is ' + response);
         console.log('I found some locations that are near by your address.');
         agent.add('I found some locations that are near by your address.');
-        agent.add('1234 Main Street Dallas, TX');
-        agent.add('2234 Park Place Dallas, TX');
-        agent.add('3678 Smith Way Dallas, TX');
+        agent.add('<address>1234 Main Street Dallas, TX</address>');
+        agent.add('<address>2234 Park Place Dallas, TX</address>');
+        agent.add('<address>3678 Smith Way Dallas, TX</address>');
       })
       .catch(e => {
         if (!!name) {
@@ -168,7 +168,7 @@ function openHours(agent) {
   //End Customer TODO
   
   const mapsClient = new MapsClient({});
-  
+  const radius = 1000;
   var name;
   return convertAddressToGeocode(mapsClient, userAddress)
       .then(response => {
@@ -178,7 +178,7 @@ function openHours(agent) {
           input: organization,
           inputtype: 'textquery',
           fields: 'place_id,formatted_address,name,opening_hours',
-          locationbias: 'circle:1000@' + response,
+          locationbias: 'circle:' + radius + '@' + response,
           key: process.env.GOOGLE_MAPS_API_KEY
         },
         timeout: 5000  // milliseconds
@@ -215,7 +215,7 @@ function openHours(agent) {
               new Error('No opening hours found for ' + organization + ' branch near address ' + userAddress));
         }
         console.log('result is ' + JSON.stringify(result));
-        agent.add('I found a ' + result.name + ' located at ' + result.formatted_address + '.');
+        agent.add('I found a ' + result.name + ' located at <address>' + result.formatted_address + '</address>.');
         var message = 'According to ' + result.name + ', ' +
               ' the hours for this address are ' + formatWeekdayText(result.opening_hours.weekday_text);
         console.log(message);
@@ -294,7 +294,7 @@ function openBranches(agent) {
            if(candidates[i].business_status === 'OPERATIONAL'){
                operationalCount += 1; 
                console.log(candidates[i].vicinity);
-               agent.add(candidates[i].vicinity);
+               agent.add('<address>' + candidates[i].vicinity + '</address>');
            }
         }
         return;
@@ -303,7 +303,7 @@ function openBranches(agent) {
         if (!!name) {
           agent.add(`I'm sorry, I can't find any open branches for ` + name);
         } else {
-          agent.add(`I'm sorry, I can't find any open branches near by ` + userAddress);
+          agent.add(`I'm sorry, I can't find any open branches near by <address>` + userAddress + `</address>.`);
         }
         console.log(e);
         return;
