@@ -225,7 +225,7 @@ can import it into your own Dialogflow agent and make changes to fit your needs.
 3. Click the Settings icon.
 4. Select the Export and Import tab, then click the IMPORT FROM ZIP button to 
 import the agent template.
-![Import Agent Screenshot](../resources/import-export.png)
+![Import Agent Screenshot](../../resources/import-export.png)
 
 ### Import and Deploy Fulfillment into Your Agent
 *Please note there are two special intents (locations.open_branches and locations.hours_of_operations) which require you to set up the Google Places API and Geocoding API. Please follow step 8-9 to set up the APIs.*
@@ -234,16 +234,16 @@ import the agent template.
 2. Click "Fulfillment" in the left sidebar.
 
 3. Toggle the switch to enable the Inline Editor.
-![Inline Editor Screenshot](../resources/inline-editor.png).
+![Inline Editor Screenshot](../../resources/inline-editor.png).
 
 4. Follow the instruction on the screen to enable fulfillment via Cloud 
 Functions and enable billing for the Cloud project.
 
 5. Go to the Google Cloud Console and select Cloud Functions on the left panel.
-![Cloud Function Screenshot](../resources/cloud-function.png)
+![Cloud Function Screenshot](../../resources/cloud-function.png)
 
 6. Select the fulfillment and click Edit button.
-![Cloud Function Edit Screenshot](../resources/cloud-function-edit.png)
+![Cloud Function Edit Screenshot](../../resources/cloud-function-edit.png)
 
 7. Under the "Source code" section, select "ZIP upload" and upload the 
 fulfillment zip file downloaded at step 1. Then select a Stage bucket (you may need to create one if it hasn't been created yet).
@@ -252,16 +252,16 @@ fulfillment zip file downloaded at step 1. Then select a Stage bucket (you may n
 [Google Maps Places API](https://developers.google.com/places/web-service/intro) if you haven't done so. 
 Go to GCP API & Services->Credentials component to create an API key for calling the Google Maps Places API 
 (More detailed instructions are listed at [Get an API Key](https://developers.google.com/places/web-service/get-api-key?hl=en_US).
-![Create API Key Screenshot](../resources/create-api-key.png)
+![Create API Key Screenshot](../../resources/create-api-key.png)
 
 9.  Set GOOGLE_MAPS_API_KEY environment variable to the API key when deploy Cloud Function. (More details can be found at  [Cloud Function Updating Environment Variable](https://cloud.google.com/functions/docs/env-var#updating_environment_variables))
-![Set Maps API Key Screenshot](../resources/set-maps-api-key.png)
+![Set Maps API Key Screenshot](../../resources/set-maps-api-key.png)
 
 ## Integrate with COVID-19 Banking Virtual Agent Template
 
 ### Interact with the Dialogflow Console
 Type your text query input in the Dialogflow Simulator. *Please note that custom payload of response may not show up on Dialogflow Console, you can click DIAGNOSTIC INFO to get more information about the response*.
-![Dialogflow Console Screenshot](../resources/dialogflow-console.png)
+![Dialogflow Console Screenshot](../../resources/dialogflow-console.png)
 
 ### Integrate with [Dialogflow Messenger](https://cloud.google.com/dialogflow/docs/integrations/dialogflow-messenger)
 Follow the [instructions here](https://github.com/GoogleCloudPlatform/covid19-rapid-response-demo#integrate-with-dialogflow-messenger)
