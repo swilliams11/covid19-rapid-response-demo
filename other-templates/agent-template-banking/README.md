@@ -14,7 +14,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-# COVID-19 Banking Virtual Agent Template 
+# Repository Status
+This repository is current a work in progress and we are planning to release under the 
+`GoogleCloudPlatform` Github organization within it's own repository (rapid-response-virtual-agents-financial-services).  
+
+Please standby for the updated Github link to the new repository.  The new repository will have 
+the most current agent and fulfillment code. 
+
+# Banking Rapid Response Virtual Agent Template 
 Google has launched a sample Dialogflow 
 template for banking institutions enabling chat or voice bots to 
 answer questions about branch locations and office hours. This should help banking institutions
@@ -26,12 +33,25 @@ It can:
 * Return generic responses regarding late payments and refinancing your mortgage
 
 You can:
-* Launch your bot faster with curated content
-* Customize to match your website and add content to address your organization 
+* Launch your bot faster with this agent
+* Customize it to match your website and add content to address your organization 
 and community needs  
 
+## Requirements
+The answers provided in this Dialogflow agent are generic and do not constitute medical, legal or financial advice. Furthermore, it is expected that the customer changes the answers to **ALL** questions
+to suit their specific situation. 
+
+Additionally, there are two questions that require you to enable additional APIs (Geocoding API, Maps Places Details) in your Google Cloud Platform project for the agent 
+to respond to your question correctly.
+1. `BANK_NAME` open branches?
+2. What are the hours of operation for `BANK_NAME`?
+
+We have provided a fulfillment service that allows the agent to answer the two questions above.  It uses a custom entity named `organization`, which recognizes
+when a user enters a valid bank name.  The agent is equiped with about 20 different bank names for which it can list open branches and hours of operation.
+However, customers **must** remove all banks listed in the `organization` entity and list only their bank name and synonmyms for their bank.
+
 ## Agent Questions
-Following the documentation below to deploy your agent and then you ask the following questions.  The agent is
+Follow the documentation below to deploy your agent and then you ask the following questions.  The agent is
 is able to handle variations in the questions below, so these are sample questions.  Only a subset of bank names were entered into the agent.
 
 ### General Questions
@@ -55,13 +75,13 @@ If you want to formally request that your credit card payment be delayed for you
 then please enroll online for the fastest service.
 ```
 
-#### 3. How are you assisting banking customers affected by the COVID19 pandemic?
+#### 3. How are you assisting banking customers affected by the pandemic?
 
 The agent will respond with the default text response; no fulfillment.
 
 ##### Agent Response
 ```
-We are here to help in any way we can.  First visit the CDC for the most updated information on COVID-19.  
+We are here to help in any way we can.  First visit the CDC for the most updated information on the pandemic.  
 We offer a variety of mobile services such as banking online, transferring money via our mobile application, 
 depositing checks from your home by phone or our app, and the ability to make purchases with our digital wallet.  
 These service should help you maintain social distancing.  We are also limiting our branch office hours and allowing 
@@ -88,7 +108,7 @@ The agent will respond with the default text response; no fulfillment.
 
 ##### Agent Response
 ```
-We understand during this time that you may be seriously affected by COVID-19 and we may 
+We understand during this time that you may be seriously affected by the current pandemic and we may 
 be able to assist you with your payment. We can provide some options depending on if it is 
 a loan or credit card.  If its a loan, then we may allow you to skip loan payments with no 
 adverse consequences for you, extend loan terms, or restructure the loan.  
@@ -96,30 +116,30 @@ If it is a credit card then we may be able to waive the late charge and possibly
 interest for a set time period.  Please use our website to request more information.
 ```
 
-#### 6. Can I defer loan payments because of COVID-19?
+#### 6. Can I defer loan payments because of the pandemic?
 
 The agent will respond with the default text response; no fulfillment.
 
 ##### Agent Response
 ```
-If you are unable to make a loan payment due to COVID-19, then we may be able to assist you. 
+If you are unable to make a loan payment due to the current pandemic, then we may be able to assist you. 
 Please contact us for more information or visit our website for more information.
 ```
 
-#### 7. How are we assisting mortgage customers affected by the COVID-19 pandemic?
+#### 7. How are you assisting mortgage customers affected by the pandemic?
 
 The agent will respond with the default text response; no fulfillment.
 
 ##### Agent Response
 ```
-A new federal law, the Coronavirus Aid, Relief, and Economic Security (CARES) Act, puts in place two 
+A new federal law, the CARES Act, puts in place two 
 protections for homeowners with federally backed mortgages:
 
 First, your lender or loan servicer may not foreclose on you for 60 days after March 18, 2020. Specifically, 
 the CARES Act prohibits lenders and servicers from beginning a judicial or non-judicial foreclosure against you, 
 or from finalizing a foreclosure judgment or sale, during this period of time.
 
-Second, if you experience financial hardship due to the coronavirus pandemic, you have a right to 
+Second, if you experience financial hardship due to the pandemic, you have a right to 
 request a forbearance for up to 180 days. You also have the right to request an extension for up to another 180 days. 
 You must contact your loan servicer to request this forbearance. There will be no additional fees, penalties or 
 additional interest (beyond scheduled amounts) added to your account. You do not need to submit additional documentation 
@@ -215,12 +235,12 @@ I found some locations that are near by your address.
 
 
 ## Agent Deployment
-Google provides the [COVID-19 Banking Dialogflow virtual agent 
-template (the "Template")](./covid-19-agent-template.zip), so you 
+Google provides the [Rapid Response Banking Dialogflow virtual agent 
+template (the "Template")](./agent-template.zip), so you 
 can import it into your own Dialogflow agent and make changes to fit your needs.
 
-### Import the COVID-19 Banking Dialogflow Virtual Agent Template into Your Agent
-1. Download the [COVID-19 Banking Dialogflow Agent Template](./covid-19-agent-template.zip)
+### Import the Rapid Response Banking Dialogflow Virtual Agent Template into Your Agent
+1. Download the [Rapid Response Banking Dialogflow Agent Template](./agent-template.zip)
 2. Create a new agent.
 3. Click the Settings icon.
 4. Select the Export and Import tab, then click the IMPORT FROM ZIP button to 
@@ -229,7 +249,7 @@ import the agent template.
 
 ### Import and Deploy Fulfillment into Your Agent
 *Please note there are two special intents (locations.open_branches and locations.hours_of_operations) which require you to set up the Google Places API and Geocoding API. Please follow step 8-9 to set up the APIs.*
-1. Download Fulfillment from [Dialogflow COVID-19 Fulfillment.](./dialogflow-fulfillment.zip).
+1. Download Fulfillment from [Dialogflow Fulfillment.](./dialogflow-fulfillment.zip).
 
 2. Click "Fulfillment" in the left sidebar.
 
@@ -250,14 +270,14 @@ fulfillment zip file downloaded at step 1. Then select a Stage bucket (you may n
 
 8. [Optional] Follow [Quickstart](https://developers.google.com/maps/gmp-get-started#quickstart) to enable 
 [Google Maps Places API](https://developers.google.com/places/web-service/intro) if you haven't done so. 
-Go to GCP API & Services->Credentials component to create an API key for calling the Google Maps Places API 
+Go to GCP API & Services->Credentials component to create an API key for calling the Google Maps Places API and the Geocoding API 
 (More detailed instructions are listed at [Get an API Key](https://developers.google.com/places/web-service/get-api-key?hl=en_US).
 ![Create API Key Screenshot](../../resources/create-api-key.png)
 
 9.  Set GOOGLE_MAPS_API_KEY environment variable to the API key when deploy Cloud Function. (More details can be found at  [Cloud Function Updating Environment Variable](https://cloud.google.com/functions/docs/env-var#updating_environment_variables))
 ![Set Maps API Key Screenshot](../../resources/set-maps-api-key.png)
 
-## Integrate with COVID-19 Banking Virtual Agent Template
+## Integrate with Rapid Response Banking Virtual Agent Template
 
 ### Interact with the Dialogflow Console
 Type your text query input in the Dialogflow Simulator. *Please note that custom payload of response may not show up on Dialogflow Console, you can click DIAGNOSTIC INFO to get more information about the response*.
