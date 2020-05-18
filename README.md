@@ -15,11 +15,8 @@
   limitations under the License.
 -->
 # Repository Status
-This repository is current a work in progress and we are planning to release under the 
-`GoogleCloudPlatform` Github organization within it's own repository (rapid-response-virtual-agents-financial-services).  
-
-Please standby for the updated Github link to the new repository.  The new repository will have 
-the most current agent and fulfillment code. 
+This repository is no longer utilized or actively developed. 
+Please see [GoogleCloudPlatform/dialogflow-virtual-agents-financial-services](https://github.com/GoogleCloudPlatform/dialogflow-virtual-agents-financial-services).  
 
 # Verily Pathfinder Virtual Agent Template for COVID-19 
 Verily, in partnership with Google Cloud, has launched a curated Dialogflow 
